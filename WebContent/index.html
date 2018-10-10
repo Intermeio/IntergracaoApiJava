@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Comunicação API Intermeio</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function(){	
+ jQuery(document).on("click","#btnToken", function(){	 
+	 jQuery.ajax({
+		  type: "POST",
+		  url: "http://localhost:8080/TesteWebAPI/TokenServelt",
+		  success: function(msg){
+		      jQuery("#resutladoToken").text(msg);
+		  },
+		  error: function() {
+		     alert("deu ruim");
+		  }
+		});
+ 	});
+ jQuery(document).on("click","#btnBoleto", function(){	 
+	 jQuery.ajax({
+		  type: "POST",
+		  url: "http://localhost:8080/TesteWebAPI/BoletoServelt",
+		  data: {action : "BOLETO"},
+		  success: function(msg){
+		      var boleto =JSON.parse(msg);
+			  jQuery("#resultadoBoleto").text(msg);
+		      window.open("https://intermeio.com/boleto/"+ boleto.resultado.hashBoleto, "_blank");
+		  },
+		  error: function() {
+		     alert("deu ruim");
+		  }
+		});
+ 	});
+ jQuery(document).on("click","#btnGerarBoletoToken", function(){	 
+	 jQuery.ajax({
+		  type: "POST",
+		  url: "http://localhost:8080/TesteWebAPI/BoletoServelt",
+		  data: {action : "BOLETOTOKEN", token: jQuery("#tokenBoleto").val()},
+		  success: function(msg){
+		      var boleto =JSON.parse(msg);
+			  jQuery("#resultadoBoletoToken").text(msg);
+		      window.open("https://intermeio.com/boleto/"+ boleto.resultado.hashBoleto, "_blank");
+		  },
+		  error: function() {
+		     alert("deu ruim");
+		  }
+		});
+ 	});
+ jQuery(document).on("click","#btnGerarBoletoLote", function(){	 
+	 jQuery.ajax({
+		  type: "POST",
+		  url: "http://localhost:8080/TesteWebAPI/BoletoServelt",
+		  data:{action:"BoletoLote"},
+		  success: function(msg){
+			  jQuery("#resultadoBoletoLote").text(msg);
+		  },
+		  error: function() {
+		     alert("deu ruim");
+		  }
+		});
+ 	});
+ 
+ });
+</script>
+</head>
+<body>
+<h1>Teste</h1>
+<div>
+<button type="button" value="Token" id="btnToken" >Token</button>
+<div id="resutladoToken">
+</div>
+</div>
+<br/>
+<div>
+<button type="button" value="Boleto" id="btnBoleto" >Boleto</button>
+<div id="resultadoBoleto">
+</div>
+</div>
+<br>
+<div>
+<button type="button" value="BoletoToken" id="btnGerarBoletoToken" >Boleto Token</button>
+<input id="tokenBoleto" type="text" style="width: 400px"></input>
+<div id="resultadoBoletoToken">
+</div>
+</div>
+<br>
+<div>
+<button type="button" value="Lote" id="btnGerarBoletoLote" >Boleto Lote</button>
+<div id="resultadoBoletoLote">
+</div>
+</div>
+
+</body>
+</html>
+
+
